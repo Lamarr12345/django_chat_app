@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Site{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header class="header">
+    {% block div_header %}{% endblock %}
+</header>
+
+<div class="content">
+    {% block div_content %}{% endblock %}
+</div>
+
+<footer class="footer">
+    {% block div_footer %} <p>© 2025 Chat App</p>{% endblock %}
+</footer>
+
+</body>
+</html>

@@ -8,63 +8,53 @@ def home_redirect(request):
     return redirect('chat:home')
 
 def home(request):
-    return HttpResponse("this is the home page")
+    context = {
+    }
+    return render(request, "home.html", context=context)
 
-def test_create_user(request):
-    missing = []
-    username = request.GET.get('username')
-    if not username:
-        missing.append('username')
-    email = request.GET.get('email')
-    if not email:
-        missing.append('email')
-    password = request.GET.get('password')
-    if not password:
-        missing.append('password')
-    if missing:
-        return HttpResponse(f"{missing} parameters missing")
 
-    models.User.objects.create(username=username,email=email,password=password)
+def login(request):
+    context = {
+    }
+    return render(request, "login.html", context=context)
 
-    return HttpResponse(f"user {username} has been created")
 
-def test_create_pubchat(request):
-    try:
-        last_id = models.ChatRoomPublic.objects.last().id
-    except:
-        last_id = 0
-    last_id = str(last_id + 1) 
-    url_id = "0"*(10-len(last_id)) + last_id
-    models.ChatRoomPublic.objects.create(url_id=url_id)
+def signup(request):
+    context = {
+    }
+    return render(request, "signup.html", context=context)
 
-    return HttpResponse(f"new public room with id {url_id} has been created.")
 
-def test_add_pubuser(request):
-    models.ChatRoomPublic.objects.filter(url_id='0000000001')[0].user.add(models)
+def user_home(request, user_id):
+    username = "john"
+    context = {
+        "username" : username
+    }
+    return render(request, "user_home.html", context=context)
 
-def text_create_pubtext(request):
-    pass
 
-def test_create_privchat(request):
-    pass
+def user_public_chats(request, user_id):
+    context = {
+    }
+    return render(request, "user_public_chats.html", context=context)
 
-def test_create_privtext(request):
-    pass
 
-def test(request):
-    new_user = models.User.objects.create(username="tim",email="time@mail.fr",password="123")
-    try:
-        last_id = models.ChatRoomPublic.objects.last().id
-    except:
-        last_id = 0
-    last_id = str(last_id + 1) 
-    url_id = "0"*(10-len(last_id)) + last_id
-    new_pubchat = models.ChatRoomPublic.objects.create(url_id=url_id)
+def user_public_chat_room(request, user_id, url_id):
+    context = {
+    }
+    return render(request, "user_public_chat_room.html", context=context)
 
-    new_pubchat.user.add(new_user)
 
-    new_user2 = models.User.objects.create(username="tom",email="tome@mail.fr",password="123")
-    new_privchat = models.ChatRoomPrivat.objects.create(url_id="10-11", user_1=new_user, user_2=new_user2)
+def user_private_chats(request, user_id):
+    context = {
+    }
+    return render(request, "user_private_chats.html", context=context)
 
-    return HttpResponse("test")
+
+def user_private_chat_room(request, user_id, url_id):
+    context = {
+    }
+    return render(request, "user_private_chat_room.html", context=context)
+
+
 

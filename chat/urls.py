@@ -5,7 +5,11 @@ app_name = "chat"
 urlpatterns = [
     path('', views.home_redirect, name='redirect-to-home'),
     path('home/', views.home, name='home'),
-    path('test_create_user/', views.test_create_user, name='test-create-user'),
-    path('test_create_pubchat/', views.test_create_pubchat, name='test-create-pubchat'),
-    path('test/', views.test, name='test-create-pubchat'),
+    path('login/', views.login, name='login'),
+    path('signup/', views.signup, name='signup'),
+    path('<int:user_id>/home/', views.user_home, name='user-home'),
+    path('<int:user_id>/public_chats/', views.user_public_chats, name='user-public-chats'),
+    path('<int:user_id>/public_chat/<str:url_id>/', views.user_public_chat_room, name='user-public-chat-room'),
+    path('<int:user_id>/privat_chats/', views.user_private_chats, name='user-private-chats'),
+    path('<int:user_id>/privat_chat/<str:url_id>/', views.user_private_chat_room, name='user-private-chat-room'),
 ]

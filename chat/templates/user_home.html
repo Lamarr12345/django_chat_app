@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block div_header %}
+<h1>Chat App</h1>
+<p>Welcome back to Chat App {{  username  }}</p>
+<button type="button">Log Out</button> 
+{% endblock %}
+
+
+{% block div_content %}
+<p>*additional info like active users or active chatrooms</p>
+<p>Browse open chatroom to find a suiting one and participate in conversations or joind directly by ID.</p>
+<button type="button">Open Chatrooms</button><br>
+<label for="public_chat_id">Public Chat ID:</label>
+<input type="text" id="public_chat_id" name="public_chat_id"><br>
+<button type="button">Join Public Chat</button><br>
+{% endblock %}

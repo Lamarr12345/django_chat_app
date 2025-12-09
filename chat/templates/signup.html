@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block div_header %}
+<h1>Sign Up</h1>
+{% endblock %}
+
+
+{% block div_content %}
+<form>
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <label for="confirm_password">Confirm Password:</label><br>
+    <input type="password" id="confirm_password" name="confirm_password"><br>
+    <input type="submit" value="Sign up">
+</form> 
+{% endblock %}
