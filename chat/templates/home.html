@@ -7,14 +7,20 @@ Home
 
 {% block div_header %}
 <h1>Chat App</h1>
-<p>Welcome to Chat App guest</p>
+<div id="header-sub">
+    <p>Welcome to Chat App guest</p>
+    <div id="header-sub-buttons">
+        <a href="{% url 'chat:login' %}">Log In</a> |
+        <a href="{% url 'chat:signup' %}">Sign Up</a>
+    </div>
+</div>
 {% endblock %}
 
 
 {% block div_content %}
 <p>*additional info like active users or active chatrooms</p>
 <p>Please create an account or log into an existing one.</p><br>
-<button type="button">Log In</button> 
-<button type="button">Sign Up</button> 
 {% endblock %}
+
+{% block div_footer %}<p>© 2025 Chat App</p>{% endblock %}
 

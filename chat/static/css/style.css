@@ -1,0 +1,11 @@
+#header-sub {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#header-sub-buttons {
+    display: flex;
+    flex-direction: row;
+    margin-right: 30%;
+}

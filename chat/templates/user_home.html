@@ -7,8 +7,12 @@ Home
 
 {% block div_header %}
 <h1>Chat App</h1>
-<p>Welcome back to Chat App {{  username  }}</p>
-<button type="button">Log Out</button> 
+<div id="header-sub">
+    <p>Welcome to Chat App {{  username  }}</p>
+    <div id="header-sub-buttons">
+        <a href="{% url 'chat:logout' %}">Log Out</a>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -16,7 +20,11 @@ Home
 <p>*additional info like active users or active chatrooms</p>
 <p>Browse open chatroom to find a suiting one and participate in conversations or joind directly by ID.</p>
 <button type="button">Open Chatrooms</button><br>
-<label for="public_chat_id">Public Chat ID:</label>
-<input type="text" id="public_chat_id" name="public_chat_id"><br>
-<button type="button">Join Public Chat</button><br>
+<div style="display: flex;">
+    <label for="public_chat_id">Public Chat ID:</label>
+    <input type="text" id="public_chat_id" name="public_chat_id"><br>
+    <button type="button">Join Public Chat</button><br>
+</div>
 {% endblock %}
+
+{% block div_footer %}<p>© 2025 Chat App</p>{% endblock %}

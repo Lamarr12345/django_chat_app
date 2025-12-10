@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.home_redirect, name='redirect-to-home'),
     path('home/', views.home, name='home'),
     path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('signup/', views.signup, name='signup'),
     path('<int:user_id>/home/', views.user_home, name='user-home'),
     path('<int:user_id>/public_chats/', views.user_public_chats, name='user-public-chats'),
