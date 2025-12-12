@@ -15,9 +15,16 @@ Private Chat
 {% block div_content %}
 <div class="chat-window">
     {% for m in chat_msgs %}
-    <label>{{  m.time_stamp|date:'H:i'  }}</label>
-    <label>{{  m.user.username  }}</label>
-    <p>{{  m.content  }}</p>
+    <div class="chat-field">
+        <label>{{  m.time_stamp|date:'H:i'  }}</label>
+        <label>{{  m.user.username  }}</label>
+        <p>{{  m.content  }}</p>
+    </div>
     {% endfor %}
 </div>
+<form method="POST">
+    {% csrf_token %}
+    {{  form.as_p  }}
+    <button type="submit">Send</button>
+</form>
 {% endblock %}

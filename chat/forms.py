@@ -66,3 +66,10 @@ class JoinPrivateChatForm(forms.Form):
         clean_data = super().clean()
         if not models.User.objects.filter(username=clean_data.get("username")).exists():
             self.add_error("username", ValidationError("Username not found."))
+
+class ChatInputForm(forms.Form):
+    text = forms.CharField(max_length=255, label=False, widget=forms.TextInput(attrs={'placeholder':'Message here'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].label = ""

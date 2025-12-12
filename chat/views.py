@@ -141,7 +141,14 @@ def user_private_chat_room(request, user_id, url_id):
         chat_msgs.query.set_limits(high=20)
         chat_msgs = sorted(chat_msgs, key=lambda x : x.time_stamp)
 
-        context = {"user_1": room.user_1.username, "user_2": room.user_2.username, "chat_msgs":chat_msgs}
+        if request.POST.get("text"):
+            models.TextMessagePrivat.objects.create(content=request.POST.get("text"),
+                                                                chat_room = room,
+                                                                user = request.user)
+            form = forms.ChatInputForm()
+        else:
+            form = forms.ChatInputForm(request.POST)
+        context = {"user_1": room.user_1.username, "user_2": room.user_2.username, "chat_msgs":chat_msgs, "form": form}
         return render(request, "user_private_chat_room.html",context=context)
     else:
         return render(request, "no_access.html")

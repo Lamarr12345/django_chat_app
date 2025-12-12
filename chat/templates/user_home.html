@@ -20,7 +20,7 @@ Home
 <p>*additional info like active users or active chatrooms</p>
 
 <h2>Public Chat</h2>
-<form method="POST">
+<form method="GET">
     {% csrf_token %}
     <input type="hidden" name="form-type" value="public-chat-rooms">
     <button type="submit">Show Public Chat Rooms</button>
@@ -35,7 +35,7 @@ Home
 </form>
 
 <h2>Private Chat</h2>
-<form method="POST">
+<form method="GET">
     {% csrf_token %}
     <input type="hidden" name="form-type" value="private-chat-rooms">
     <button type="submit">Show My Private Chat Rooms</button>

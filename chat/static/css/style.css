@@ -15,3 +15,8 @@
     overflow-y: scroll;
     height:40%;
 }
+
+.chat-field{
+    border-color: grey;
+    border-width: 2px;
+}
