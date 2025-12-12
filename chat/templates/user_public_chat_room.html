@@ -2,20 +2,23 @@
 {% load static %}
 
 {% block title %}
-
+Public Chat
 {% endblock %}
 
 
 {% block div_header %}
-
+<h1>Public Chat Room</h1>
+<p>ID : {{  url_id  }}</p>
 {% endblock %}
 
 
 {% block div_content %}
-
-{% endblock %}
-
-
-{% block div_footer %}
+<div class="chat-window">
+    {% for m in chat_msgs %}
+    <label>{{  m[0]  }}</label>
+    <label>{{  m[1]  }}</label>
+    <p>{{  m[2]  }}</p>
+    {% endfor %}
+</div>
 
 {% endblock %}

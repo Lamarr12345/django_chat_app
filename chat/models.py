@@ -1,12 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
 # Create your models here.
 
-class User(models.Model):
+class User(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255, null=False, blank=False)
+    #password = models.CharField(max_length=255, null=False, blank=False)
 
     def __str__(self):
         return self.username
@@ -23,7 +24,6 @@ class ChatRoomPublic(models.Model):
 #   guest = models.ManyToManyField(Guest, blank=True, related_name='public_guests')
     url_id = models.CharField(max_length=10, unique=True)        # 0s + row id (0s till the total amount of characters is 10 eg '0000000012' for id 12)
     state = models.SmallIntegerField(choices=STATES, default=1)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='public_user_owner')
 
     def __str__(self):
         return self.url_id
@@ -56,7 +56,7 @@ class ChatRoomPrivat(models.Model):
 
 class TextMessagePrivat(models.Model):
     time_stamp = models.DateTimeField(auto_now=True)
-    content = models.TextField()
+    content = models.TextField(blank=False)
     chat_room = models.ForeignKey(ChatRoomPrivat, on_delete=models.CASCADE, db_index=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='privat_text_user')
 

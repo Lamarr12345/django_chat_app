@@ -9,3 +9,9 @@
     flex-direction: row;
     margin-right: 30%;
 }
+
+.chat-window {
+    background-color: lightgrey;
+    overflow-y: scroll;
+    height:40%;
+}

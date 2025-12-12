@@ -2,20 +2,22 @@
 {% load static %}
 
 {% block title %}
-
+Private Chat
 {% endblock %}
 
 
 {% block div_header %}
-
+<h1>Private Chat Room</h1>
+<p>Chat of  {{  user_1  }} and {{  user_2  }}</p>
 {% endblock %}
 
 
 {% block div_content %}
-
-{% endblock %}
-
-
-{% block div_footer %}
-
+<div class="chat-window">
+    {% for m in chat_msgs %}
+    <label>{{  m.time_stamp|date:'H:i'  }}</label>
+    <label>{{  m.user.username  }}</label>
+    <p>{{  m.content  }}</p>
+    {% endfor %}
+</div>
 {% endblock %}

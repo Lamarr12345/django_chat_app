@@ -12,11 +12,9 @@ Login
 
 
 {% block div_content %}
-<form>
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br>
-    <input type="submit" value="Login">
+<form method="POST">
+    {% csrf_token %}
+    {{  form.as_p  }}
+    <button type="submit">Log In</button>
 </form> 
 {% endblock %}

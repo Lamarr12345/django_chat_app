@@ -18,13 +18,36 @@ Home
 
 {% block div_content %}
 <p>*additional info like active users or active chatrooms</p>
-<p>Browse open chatroom to find a suiting one and participate in conversations or joind directly by ID.</p>
-<button type="button">Open Chatrooms</button><br>
-<div style="display: flex;">
-    <label for="public_chat_id">Public Chat ID:</label>
-    <input type="text" id="public_chat_id" name="public_chat_id"><br>
-    <button type="button">Join Public Chat</button><br>
-</div>
+
+<h2>Public Chat</h2>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="form-type" value="public-chat-rooms">
+    <button type="submit">Show Public Chat Rooms</button>
+</form>
+
+<h3>Join a Public Chat by Chat ID</h3>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="form-type" value="join-public-chat-room">
+    {{  form_public.as_p  }}
+    <button type="submit">Join Public Chat Rooms</button>
+</form>
+
+<h2>Private Chat</h2>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="form-type" value="private-chat-rooms">
+    <button type="submit">Show My Private Chat Rooms</button>
+</form>
+
+<h3>Join a Private Chat by Username</h3>
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="form-type" value="join-private-chat-room">
+    {{  form_private.as_p  }}
+    <button type="submit">Join Public Chat Rooms</button>
+</form>
 {% endblock %}
 
 {% block div_footer %}<p>© 2025 Chat App</p>{% endblock %}
