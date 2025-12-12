@@ -119,7 +119,17 @@ def user_public_chats(request, user_id):
 def user_public_chat_room(request, user_id, url_id):
     if request.user.is_authenticated and request.user.id == user_id and is_public_member(request.user, url_id):
         room = models.ChatRoomPublic.objects.get(url_id=url_id)
-        context = {"url_id": url_id}
+        
+        if request.POST.get("text"):
+            models.TextMessagePublic.objects.create(content=request.POST.get("text"),
+                                                                chat_room = room,
+                                                                user = request.user)
+
+        chat_msgs = models.TextMessagePublic.objects.filter(chat_room=room).order_by('-time_stamp')
+        chat_msgs.query.set_limits(high=20)
+
+        form = forms.ChatInputForm()
+        context = {"url_id":url_id, "chat_msgs":chat_msgs, "form": form}
         return render(request, "user_public_chat_room.html",context=context)
     else:
         return render(request, "no_access.html")
@@ -135,19 +145,16 @@ def user_private_chats(request, user_id):
 def user_private_chat_room(request, user_id, url_id):
     if request.user.is_authenticated and request.user.id == user_id and is_private_member(request.user, url_id):
         room = models.ChatRoomPrivat.objects.get(url_id=url_id)
-        context = {"user_1": room.user_1.username, "user_2": room.user_2.username}
-
-        chat_msgs = models.TextMessagePrivat.objects.filter(chat_room=room).order_by('-time_stamp')
-        chat_msgs.query.set_limits(high=20)
-        chat_msgs = sorted(chat_msgs, key=lambda x : x.time_stamp)
-
+        
         if request.POST.get("text"):
             models.TextMessagePrivat.objects.create(content=request.POST.get("text"),
                                                                 chat_room = room,
                                                                 user = request.user)
-            form = forms.ChatInputForm()
-        else:
-            form = forms.ChatInputForm(request.POST)
+
+        chat_msgs = models.TextMessagePrivat.objects.filter(chat_room=room).order_by('-time_stamp')
+        chat_msgs.query.set_limits(high=20)
+
+        form = forms.ChatInputForm()
         context = {"user_1": room.user_1.username, "user_2": room.user_2.username, "chat_msgs":chat_msgs, "form": form}
         return render(request, "user_private_chat_room.html",context=context)
     else:

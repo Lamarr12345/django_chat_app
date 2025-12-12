@@ -27,10 +27,10 @@ class SignupForm(forms.Form):
 
     def clean(self):
         clean_data = super().clean()
-        username = clean_data["username"]
-        email = clean_data["email"]
-        password  = clean_data["password"]
-        confirm_password = clean_data["confirm_password"]
+        username = clean_data.get("username")
+        email = clean_data.get("email")
+        password  = clean_data.get("password")
+        confirm_password = clean_data.get("confirm_password")
 
         if models.User.objects.filter(username=username):
             self.add_error("username", ValidationError("Username already taken."))
@@ -38,16 +38,16 @@ class SignupForm(forms.Form):
             self.add_error("email", ValidationError("Email already taken."))
         if password != confirm_password:
             self.add_error("password", ValidationError("Password and password confirmation do not match."))
-        if len(password) < 8:
-            self.add_error("password", ValidationError("Password shorter than 8 symbols."))
-        if not [x for x in password if x.isupper()]:
-            self.add_error("password", ValidationError("Password must contain upper case letter."))
-        if not [x for x in password if x.islower()]:
-            self.add_error("password", ValidationError("Password must contain lower case letter."))
-        if not [x for x in password if x.isnumeric()]:
-            self.add_error("password", ValidationError("Password must contain number."))
-        if " " in password:
-            self.add_error("password", ValidationError("Password contains empty spaces."))
+        # if len(password) < 8:
+        #     self.add_error("password", ValidationError("Password shorter than 8 symbols."))
+        # if not [x for x in password if x.isupper()]:
+        #     self.add_error("password", ValidationError("Password must contain upper case letter."))
+        # if not [x for x in password if x.islower()]:
+        #     self.add_error("password", ValidationError("Password must contain lower case letter."))
+        # if not [x for x in password if x.isnumeric()]:
+        #     self.add_error("password", ValidationError("Password must contain number."))
+        # if " " in password:
+        #     self.add_error("password", ValidationError("Password contains empty spaces."))
 
 
 class JoinPublicChatForm(forms.Form):
@@ -55,8 +55,12 @@ class JoinPublicChatForm(forms.Form):
 
     def clean(self):
         clean_data = super().clean()
-        if not models.ChatRoomPublic.objects.filter(url_id=clean_data.get("chat_id")).exists():
+        url_id = clean_data.get("chat_id")
+        room = models.ChatRoomPublic.objects.filter(url_id=url_id)
+        if not room.exists():
             self.add_error("chat_id", ValidationError("Chat ID not found."))
+        elif room[0].state != 1:
+            self.add_error("chat_id", ValidationError("Chat Room has been closed."))
 
 
 class JoinPrivateChatForm(forms.Form):

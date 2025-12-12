@@ -11,12 +11,14 @@
 }
 
 .chat-window {
+    display: flex;
+	flex-direction: column-reverse;
     background-color: lightgrey;
     overflow-y: scroll;
-    height:40%;
+    min-height: 5vh;
+    max-height: 60vh;
 }
 
 .chat-field{
-    border-color: grey;
-    border-width: 2px;
+    border: 1px solid grey;
 }

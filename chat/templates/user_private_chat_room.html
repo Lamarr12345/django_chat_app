@@ -8,7 +8,7 @@ Private Chat
 
 {% block div_header %}
 <h1>Private Chat Room</h1>
-<p>Chat of  {{  user_1  }} and {{  user_2  }}</p>
+<h2>Chat of  {{  user_1  }} and {{  user_2  }}</h2>
 {% endblock %}
 
 
@@ -16,9 +16,9 @@ Private Chat
 <div class="chat-window">
     {% for m in chat_msgs %}
     <div class="chat-field">
-        <label>{{  m.time_stamp|date:'H:i'  }}</label>
-        <label>{{  m.user.username  }}</label>
-        <p>{{  m.content  }}</p>
+        <label class="chat-date">{{  m.time_stamp|date:'d.m.y H:i'  }}</label>
+        <label class="chat-name">{{  m.user.username  }}</label>
+        <p class="chat-msg">{{  m.content  }}</p>
     </div>
     {% endfor %}
 </div>
