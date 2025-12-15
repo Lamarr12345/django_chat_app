@@ -22,3 +22,17 @@
 .chat-field{
     border: 1px solid grey;
 }
+
+.user-private-rooms {
+    background-color: lightgrey;
+    overflow-y: scroll;
+    min-height: 5vh;
+    max-height: 80vh;
+}
+
+.private-room-field a{
+    border: 1px solid grey;
+    font-size: xx-large;
+    color: black;
+    text-decoration:none;
+}

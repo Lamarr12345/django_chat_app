@@ -7,7 +7,6 @@ from django.core.exceptions import ValidationError
 class User(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
-    #password = models.CharField(max_length=255, null=False, blank=False)
 
     def __str__(self):
         return self.username
@@ -20,10 +19,12 @@ class ChatRoomPublic(models.Model):
         (0, "closed"),
         (1, "active"),
     )
+    name = models.CharField(max_length=255)
     user = models.ManyToManyField(User, related_name='public_users')
 #   guest = models.ManyToManyField(Guest, blank=True, related_name='public_guests')
     url_id = models.CharField(max_length=10, unique=True)        # 0s + row id (0s till the total amount of characters is 10 eg '0000000012' for id 12)
     state = models.SmallIntegerField(choices=STATES, default=1)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='public_chat_owner')
 
     def __str__(self):
         return self.url_id

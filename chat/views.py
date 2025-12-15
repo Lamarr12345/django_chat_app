@@ -5,6 +5,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.core.exceptions import ValidationError
 from .validators.helper import is_private_member, is_public_member
+from datetime import datetime
+from django.db.models import Q
 from . import models
 from . import forms
 
@@ -137,7 +139,9 @@ def user_public_chat_room(request, user_id, url_id):
 
 def user_private_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
-        return render(request, "user_private_chats.html")
+        rooms = models.ChatRoomPrivat.objects.filter(Q(user_1 = request.user) | Q(user_2 = request.user))
+
+        return render(request, "user_private_chats.html", {"rooms" : rooms, "user" : request.user})
     else:
         return render(request, "no_access.html")
 
@@ -155,15 +159,18 @@ def user_private_chat_room(request, user_id, url_id):
         chat_msgs.query.set_limits(high=20)
 
         form = forms.ChatInputForm()
-        context = {"user_1": room.user_1.username, "user_2": room.user_2.username, "chat_msgs":chat_msgs, "form": form}
+        context = {"user_1": room.user_1.username, "user_2": room.user_2.username, "chat_msgs":chat_msgs, "form": form, "user": request.user}
         return render(request, "user_private_chat_room.html",context=context)
     else:
         return render(request, "no_access.html")
 
-# # form funtions
+# helper urls
 
-# def create_user(request):
-#     pass
-
+def user_private_chat_room_join(request, user_id, url_id):
+    if request.user.is_authenticated and request.user.id == user_id:
+  
+        return redirect("chat:user-private-chat-room", user_id, url_id)
+    else:
+        return render(request, "no_access.html")
 
 

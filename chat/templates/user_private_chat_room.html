@@ -22,9 +22,15 @@ Private Chat
     </div>
     {% endfor %}
 </div>
+<button onClick="window.location.href=window.location.href">Refresh Chat</button>
 <form method="POST">
     {% csrf_token %}
     {{  form.as_p  }}
     <button type="submit">Send</button>
 </form>
+{% endblock %}
+
+{% block div_footer %} 
+<br><a href="{% url 'chat:user-private-chats' user_id=user.id %}">To Private Chat Rooms</a><br>
+<br><a href="{% url 'chat:home' %}">Back to home</a><p>© 2025 Chat App</p>
 {% endblock %}

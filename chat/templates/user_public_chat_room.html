@@ -22,6 +22,7 @@ Public Chat
     </div>
     {% endfor %}
 </div>
+<button onClick="window.location.href=window.location.href">Refresh Chat</button>
 <form method="POST">
     {% csrf_token %}
     {{  form.as_p  }}

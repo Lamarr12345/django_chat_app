@@ -12,6 +12,13 @@ Private Rooms
 
 
 {% block div_content %}
+<div class="user-private-rooms">
+    {% for r in rooms %}
+    <div class="private-room-field">
+        <a href="{% url 'chat:user-private-chat-room-join' user_id=user.id url_id=r.url_id %}">Chat of {{  r.user_1  }} and {{  r.user_2  }}</a>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
 
