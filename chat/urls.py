@@ -14,4 +14,6 @@ urlpatterns = [
     path('<int:user_id>/privat_chats/', views.user_private_chats, name='user-private-chats'),
     path('<int:user_id>/privat_chat/<str:url_id>/', views.user_private_chat_room, name='user-private-chat-room'),
     path('<int:user_id>/privat_chat/<str:url_id>/join', views.user_private_chat_room_join, name='user-private-chat-room-join'),
+    path('<int:user_id>/public_chat/<str:url_id>/join', views.user_public_chat_room_join, name='user-public-chat-room-join'),
+    path('<int:user_id>/public_chat/<str:url_id>/close', views.user_public_chat_room_close, name='user-public-chat-room-close'),
 ]

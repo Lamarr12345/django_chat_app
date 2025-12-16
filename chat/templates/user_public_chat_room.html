@@ -8,7 +8,11 @@ Public Chat
 
 {% block div_header %}
 <h1>Public Chat Room</h1>
-<h2>Room ID : {{  url_id  }}</h2>
+<ul>
+    <li>Room ID : {{  room.url_id  }}</li>
+    <li>Name : {{  room.name  }}</li>
+    <li>Owner : {{  room.owner  }}</li>
+</ul>
 {% endblock %}
 
 
@@ -29,3 +33,10 @@ Public Chat
     <button type="submit">Send</button>
 </form>
 {% endblock %}
+
+
+{% block div_footer %} 
+<br><a href="{% url 'chat:user-public-chats' user_id=user.id %}">To Public Chat Rooms</a><br>
+<br><a href="{% url 'chat:home' %}">Back to home</a><p>© 2025 Chat App</p>
+{% endblock %}
+

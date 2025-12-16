@@ -15,8 +15,8 @@
 	flex-direction: column-reverse;
     background-color: lightgrey;
     overflow-y: scroll;
-    min-height: 5vh;
-    max-height: 60vh;
+    min-height: 1vh;
+    max-height: 50vh;
 }
 
 .chat-field{
@@ -24,10 +24,11 @@
 }
 
 .user-private-rooms {
+    display: block;
     background-color: lightgrey;
     overflow-y: scroll;
-    min-height: 5vh;
-    max-height: 80vh;
+    max-height:5vh;
+    max-height:60vh;
 }
 
 .private-room-field a{
@@ -35,4 +36,38 @@
     font-size: xx-large;
     color: black;
     text-decoration:none;
+    display: block;
+}
+
+.public-chat-table-container{
+    max-height: 40vh;
+    overflow-y: scroll;
+    width: 80%;
+}
+
+.public-chat-table{
+    width: 100%;
+    border: 1px solid black;
+}
+
+.public-chat-table tbody{
+    background-color: lightgray;
+}
+
+.public-chat-table td{
+    border: 1px solid grey;
+}
+
+.user-public-chat-table{
+    width: 80%;
+    border: 1px solid black;
+}
+
+.user-public-chat-table tbody{
+    background-color: lightgray;
+    min-height: 1vh;
+}
+
+.user-public-chat-table td{
+     border: 1px solid grey;
 }

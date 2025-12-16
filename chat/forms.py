@@ -77,3 +77,6 @@ class ChatInputForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['text'].label = ""
+
+class CreatePublicRoomForm(forms.Form): 
+    name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'placeholder':'Room Name'}))

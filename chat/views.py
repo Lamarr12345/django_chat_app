@@ -113,7 +113,28 @@ def user_home(request, user_id):
 
 def user_public_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
-        return render(request, "user_public_chats.html")
+        create_form = forms.CreatePublicRoomForm(request.POST or None)
+        public_rooms = models.ChatRoomPublic.objects.filter(state=1)
+        user_public_rooms = models.ChatRoomPublic.objects.filter(owner=request.user, state=1)
+
+        if request.method == 'POST':
+            if not len(models.ChatRoomPublic.objects.filter(owner=request.user, state=1)) < 3:
+                create_form.add_error("name", ValidationError("User has too many open rooms."))
+            if create_form.is_valid():
+                name = request.POST.get("name")
+                all_public_rooms = models.ChatRoomPublic.objects.all()
+                if all_public_rooms:
+                    next_id = int(all_public_rooms.last().id) + 1
+                else:
+                    next_id = 1
+                next_id = str(next_id)
+                url_id = "0"*(8-len(next_id)) + next_id
+                created_room = models.ChatRoomPublic.objects.create(name=name, url_id=url_id, owner=request.user)
+                created_room.user.add(request.user)
+                create_form = forms.CreatePublicRoomForm()
+
+        context = {"user": request.user, "create_form": create_form, "public_rooms": public_rooms, "user_public_rooms": user_public_rooms}
+        return render(request, "user_public_chats.html", context=context)
     else:
         return render(request, "no_access.html")
 
@@ -131,7 +152,7 @@ def user_public_chat_room(request, user_id, url_id):
         chat_msgs.query.set_limits(high=20)
 
         form = forms.ChatInputForm()
-        context = {"url_id":url_id, "chat_msgs":chat_msgs, "form": form}
+        context = {"room":room, "chat_msgs":chat_msgs, "form": form}
         return render(request, "user_public_chat_room.html",context=context)
     else:
         return render(request, "no_access.html")
@@ -141,7 +162,14 @@ def user_private_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
         rooms = models.ChatRoomPrivat.objects.filter(Q(user_1 = request.user) | Q(user_2 = request.user))
 
-        return render(request, "user_private_chats.html", {"rooms" : rooms, "user" : request.user})
+        room_data = []
+        for room in rooms:
+            if room.user_1 == request.user:
+                room_data.append({"room": room, "other_user":room.user_2})
+            else:
+                room_data.append({"room": room, "other_user":room.user_1})
+
+        return render(request, "user_private_chats.html", {"room_data" : room_data, "user" : request.user})
     else:
         return render(request, "no_access.html")
 
@@ -170,6 +198,30 @@ def user_private_chat_room_join(request, user_id, url_id):
     if request.user.is_authenticated and request.user.id == user_id:
   
         return redirect("chat:user-private-chat-room", user_id, url_id)
+    else:
+        return render(request, "no_access.html")
+    
+
+def user_public_chat_room_join(request, user_id, url_id):
+    if request.user.is_authenticated and request.user.id == user_id:
+
+        if not is_public_member(request.user, url_id):
+            models.ChatRoomPublic.objects.filter(url_id=url_id)[0].user.add(request.user)
+  
+        return redirect("chat:user-public-chat-room", user_id, url_id)
+    else:
+        return render(request, "no_access.html")
+
+
+def user_public_chat_room_close(request, user_id, url_id):
+    if request.user.is_authenticated and request.user.id == user_id:
+
+        rooms = models.ChatRoomPublic.objects.filter(url_id=url_id, owner=request.user)
+        if rooms:
+            rooms[0].state = 0
+            rooms[0].save()
+  
+        return redirect("chat:user-public-chats", user_id)
     else:
         return render(request, "no_access.html")
 

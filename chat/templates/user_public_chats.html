@@ -13,6 +13,92 @@ Public Rooms
 
 {% block div_content %}
 
+<div class="public-chat-table-container">
+    <table class="public-chat-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Owner</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in public_rooms %}
+            <tr>
+                <td>{{  r.url_id  }}</td>
+                <td>{{  r.name  }}</td>
+                <td>{{  r.owner  }}</td>
+                <td><a href="{% url 'chat:user-public-chat-room-join' user_id=user.id url_id=r.url_id %}">Join</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 <h2>My Public Chat Rooms</h2>
+
+<table class="user-public-chat-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in user_public_rooms %}
+        <tr>
+            <td>{{  r.url_id  }}</td>
+            <td>{{  r.name  }}</td>
+            <td><a href="{% url 'chat:user-public-chat-room-join' user_id=user.id url_id=r.url_id %}">Join</a></td>
+            <td><a href="{% url 'chat:user-public-chat-room-close' user_id=user.id url_id=r.url_id %}">close</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- <div class="public-room-label-field">
+    <label>ID</label>
+    <label>Name</label>
+    <label>Owner</label>
+</div>
+
+<div class="public-rooms">
+    {% for r in public_rooms %}
+    <div class="public-room-field">
+        <label>{{  r.url_id  }}</label>
+        <label>{{  r.name  }}</label>
+        <label>{{  r.owner  }}</label>
+        <a href="{% url 'chat:user-public-chat-room-join' user_id=user.id url_id=r.url_id %}">Join</a>
+    </div>
+    {% endfor %}
+</div>
+
+<h2>My Public Chat Rooms</h2>
+
+<div class="user-public-room-label-field">
+        <label>ID</label>
+        <label>Name</label>
+</div>
+
+<div class="user-public-rooms">
+    {% for r in user_public_rooms %}
+    <div class="user-public-room-field">
+        <label>{{  r.url_id  }}</label>
+        <label>{{  r.name  }}</label>
+        <a href="{% url 'chat:user-public-chat-room-join' user_id=user.id url_id=r.url_id %}">Join</a>
+        <a href="{% url 'chat:user-public-chat-room-close' user_id=user.id url_id=r.url_id %}">close</a>
+    </div>
+    {% endfor %}
+</div> -->
+
+<h2>Create Public Room</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{  create_form.as_p  }}
+    <button type="submit">Create Room</button>
+</form>
 
 {% endblock %}
