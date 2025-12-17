@@ -17,9 +17,11 @@ Public Rooms
     <table class="public-chat-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Owner</th>
+                <th><a href="{% url 'chat:user-public-chats' user_id=user.id  %}?order=url_id">ID</a></th>
+                <th><a href="{% url 'chat:user-public-chats' user_id=user.id  %}?order=name">Name</a></th>
+                <th><a href="{% url 'chat:user-public-chats' user_id=user.id  %}?order=owner">Owner</a></th>
+                <th><a href="{% url 'chat:user-public-chats' user_id=user.id  %}?order=-total_members">Members</a></th>
+                <th><a href="{% url 'chat:user-public-chats' user_id=user.id  %}?order=-last_updated">Last Updated</a></th>
                 <th></th>
             </tr>
         </thead>
@@ -29,6 +31,8 @@ Public Rooms
                 <td>{{  r.url_id  }}</td>
                 <td>{{  r.name  }}</td>
                 <td>{{  r.owner  }}</td>
+                <td>{{  r.total_members  }}</td>
+                <td>{{  r.last_updated|date:'d.m.y H:i'  }}</td>
                 <td><a href="{% url 'chat:user-public-chat-room-join' user_id=user.id url_id=r.url_id %}">Join</a></td>
             </tr>
             {% endfor %}
@@ -43,6 +47,8 @@ Public Rooms
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Members</th>
+            <th>Last Updated</th>
             <th></th>
             <th></th>
         </tr>
@@ -52,8 +58,10 @@ Public Rooms
         <tr>
             <td>{{  r.url_id  }}</td>
             <td>{{  r.name  }}</td>
+            <td>{{  r.total_members  }}</td>
+            <td>{{  r.last_updated|date:'d.m.y H:i'  }}</td>
             <td><a href="{% url 'chat:user-public-chat-room-join' user_id=user.id url_id=r.url_id %}">Join</a></td>
-            <td><a href="{% url 'chat:user-public-chat-room-close' user_id=user.id url_id=r.url_id %}">close</a></td>
+            <td><a href="{% url 'chat:user-public-chat-room-close' user_id=user.id url_id=r.url_id %}">Close</a></td>
         </tr>
         {% endfor %}
     </tbody>

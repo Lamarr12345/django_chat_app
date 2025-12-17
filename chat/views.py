@@ -9,6 +9,8 @@ from datetime import datetime
 from django.db.models import Q
 from . import models
 from . import forms
+from django.utils import timezone
+from django.db.models import Count
 
 # Create your views here.
 
@@ -113,9 +115,14 @@ def user_home(request, user_id):
 
 def user_public_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
+        if request.GET.get("order"):
+            chat_list_order = request.GET.get("order")
+        else:
+            chat_list_order = "-last_updated"
+
         create_form = forms.CreatePublicRoomForm(request.POST or None)
-        public_rooms = models.ChatRoomPublic.objects.filter(state=1)
-        user_public_rooms = models.ChatRoomPublic.objects.filter(owner=request.user, state=1)
+        public_rooms = models.ChatRoomPublic.objects.filter(state=1).annotate(total_members=Count("user")).order_by(chat_list_order)
+        user_public_rooms = models.ChatRoomPublic.objects.filter(owner=request.user, state=1).annotate(total_members=Count("user"))
 
         if request.method == 'POST':
             if not len(models.ChatRoomPublic.objects.filter(owner=request.user, state=1)) < 3:
@@ -147,6 +154,8 @@ def user_public_chat_room(request, user_id, url_id):
             models.TextMessagePublic.objects.create(content=request.POST.get("text"),
                                                                 chat_room = room,
                                                                 user = request.user)
+            room.last_updated = timezone.now()
+            room.save()
 
         chat_msgs = models.TextMessagePublic.objects.filter(chat_room=room).order_by('-time_stamp')
         chat_msgs.query.set_limits(high=20)
@@ -160,7 +169,7 @@ def user_public_chat_room(request, user_id, url_id):
 
 def user_private_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
-        rooms = models.ChatRoomPrivat.objects.filter(Q(user_1 = request.user) | Q(user_2 = request.user))
+        rooms = models.ChatRoomPrivat.objects.filter(Q(user_1 = request.user) | Q(user_2 = request.user)).order_by("-last_updated")
 
         room_data = []
         for room in rooms:
@@ -182,6 +191,8 @@ def user_private_chat_room(request, user_id, url_id):
             models.TextMessagePrivat.objects.create(content=request.POST.get("text"),
                                                                 chat_room = room,
                                                                 user = request.user)
+            room.last_updated = timezone.now()
+            room.save()
 
         chat_msgs = models.TextMessagePrivat.objects.filter(chat_room=room).order_by('-time_stamp')
         chat_msgs.query.set_limits(high=20)
@@ -224,5 +235,6 @@ def user_public_chat_room_close(request, user_id, url_id):
         return redirect("chat:user-public-chats", user_id)
     else:
         return render(request, "no_access.html")
+     
 
 
