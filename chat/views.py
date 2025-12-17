@@ -115,7 +115,7 @@ def user_home(request, user_id):
 
 def user_public_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
-        if request.GET.get("order"):
+        if request.GET.get("order") in ["url_id", "name", "owner", "-total_members"]:
             chat_list_order = request.GET.get("order")
         else:
             chat_list_order = "-last_updated"
