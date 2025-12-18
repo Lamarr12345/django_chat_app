@@ -5,7 +5,6 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.core.exceptions import ValidationError
 from .validators.helper import is_private_member, is_public_member
-from datetime import datetime
 from django.db.models import Q
 from . import models
 from . import forms

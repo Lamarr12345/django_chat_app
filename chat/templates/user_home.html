@@ -17,35 +17,40 @@ Home
 
 
 {% block div_content %}
-<h2>Public Chat</h2>
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="form-type" value="public-chat-rooms">
-    <button type="submit">Show Public Chat Rooms</button>
-</form>
+<div style="display: flex;">
+    <div style="margin-right: 3%;">
+        <h2>Public Chat</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="form-type" value="public-chat-rooms">
+            <button type="submit">Show Public Chat Rooms</button>
+        </form>
 
-<h3>Join a Public Chat by Chat ID</h3>
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="form-type" value="join-public-chat-room">
-    {{  form_public.as_p  }}
-    <button type="submit">Join Public Chat Room</button>
-</form>
+        <h3>Join a Public Chat by Chat ID</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="form-type" value="join-public-chat-room">
+            {{  form_public.as_p  }}
+            <button type="submit">Join Public Chat Room</button>
+        </form>
+    </div>
+    <div>
+        <h2>Private Chat</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="form-type" value="private-chat-rooms">
+            <button type="submit">Show My Private Chat Rooms</button>
+        </form>
 
-<h2>Private Chat</h2>
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="form-type" value="private-chat-rooms">
-    <button type="submit">Show My Private Chat Rooms</button>
-</form>
-
-<h3>Join a Private Chat by Username</h3>
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="form-type" value="join-private-chat-room">
-    {{  form_private.as_p  }}
-    <button type="submit">Join Private Chat Room</button>
-</form>
+        <h3>Join a Private Chat by Username</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="form-type" value="join-private-chat-room">
+            {{  form_private.as_p  }}
+            <button type="submit">Join Private Chat Room</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block div_footer %}<p>© 2025 Chat App</p>{% endblock %}

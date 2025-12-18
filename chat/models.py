@@ -27,7 +27,7 @@ class ChatRoomPublic(models.Model):
     url_id = models.CharField(max_length=10, unique=True)        # 0s + row id (0s till the total amount of characters is 10 eg '0000000012' for id 12)
     state = models.SmallIntegerField(choices=STATES, default=1)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='public_chat_owner')
-    last_updated = models.DateTimeField(null=False, default=timezone.now())
+    last_updated = models.DateTimeField(null=False, default=timezone.now)
 
     def __str__(self):
         return self.url_id
@@ -50,7 +50,7 @@ class ChatRoomPrivat(models.Model):
     user_1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='privat_user_1')
     user_2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='privat_user_2')
     url_id = models.CharField(max_length=50, unique=True)  # '(user id)-(other user id)' (the first id is the lower of the 2)
-    last_updated = models.DateTimeField(null=False, default=timezone.now())
+    last_updated = models.DateTimeField(null=False, default=timezone.now)
 
     def __str__(self):
         return self.url_id
