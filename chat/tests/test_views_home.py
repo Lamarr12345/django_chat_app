@@ -2,43 +2,43 @@ from django.test import TestCase
 from .. import views
 from django.urls import reverse
 from .. import models
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
 
 views.home
 
 class TestHome(TestCase):
-    pass
     
-    # def setUp(self):
-    #     self.user = models.User.objects.create_user(
-    #         username = 'test',
-    #         email = 'test@gmail.com',
-    #         password = 'Test1234'
-    #     )
-    #     self.redirect_to_home_url = reverse('chat:redirect-to-home')
-    #     self.home_url = reverse('chat:home')
-    #     self.login_url = reverse('chat:login')
-    #     self.logout_url = reverse('chat:logout')
-    #     self.signup_url = reverse('chat:signup')
-    #     # self.user_home_url = reverse('chat:user-home')
-    #     # self.user_public_chats_url = reverse('chat:user-public-chats')
-    #     # self.user_public_chat_room_url = reverse('chat:user-public-chat-room')
-    #     # self.user_private_chats_url = reverse('chat:user-private-chats')
-    #     # self.user_private_chat_room_url = reverse('chat:user-private-chat-room')
-    #     # self.user_private_chat_room_join_url = reverse('chat:user-private-chat-room-join')
-    #     # self.user_public_chat_room_join_url = reverse('chat:user-public-chat-room-join')
-    #     # self.user_public_chat_room_close_url = reverse('chat:user-public-chat-room-close')
+    def setUp(self):
+        self.user = models.User.objects.create_user(
+            username = 'test',
+            email = 'test@gmail.com',
+            password = 'Test1234'
+        )
 
-    # def test_home(self):
-    #     print(self.redirect_to_home_url)
-    #     print(self.home_url)
-    #     print(self.login_url)
-    #     print(self.logout_url)
-    #     print(self.signup_url)
-    #     # print(self.user_home_url)
-    #     # print(self.user_public_chats_url)
-    #     # print(self.user_public_chat_room_url)
-    #     # print(self.user_private_chats_url)
-    #     # print(self.user_private_chat_room_url)
-    #     # print(self.user_private_chat_room_join_url)
-    #     # print(self.user_public_chat_room_join_url)
-    #     # print(self.user_public_chat_room_close_url)
+        self.user2 = models.User.objects.create_user(
+            username = 'test2',
+            email = 'test2@gmail.com',
+            password = 'Test1234'
+        )
+
+        self.password = 'Test1234'
+        self.home_url = reverse('chat:home')
+        self.user_home_url = reverse('chat:user-home', kwargs={"user_id":self.user.id})
+
+    def test_home_get_unauthenticated_visitor(self):
+        response = self.client.get(self.home_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,'home.html')
+
+
+    def test_home_get_authenticated_user(self):
+        self.client.login(username=self.user.username,password=self.password) 
+
+        response = self.client.get(self.home_url)
+
+        session = self.client.session
+        self.assertEqual(str(session['_auth_user_id']), str(self.user.id))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.user.is_authenticated)
+        self.assertRedirects(response, self.user_home_url)
