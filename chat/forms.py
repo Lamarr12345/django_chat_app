@@ -9,13 +9,14 @@ class LoginForm(forms.Form):
 
     def clean(self):
         clean_data = super().clean()
-        print(clean_data)
-        if not models.User.objects.filter(username=clean_data.get("username")):
-            self.add_error("username", ValidationError(f"Username '{clean_data.get("username")}' not found."))
-        potential_user = models.User.objects.filter(username=clean_data.get("username"))
+        username = clean_data.get("username")
+        password = clean_data.get("password")
+        if not models.User.objects.filter(username=username):
+            self.add_error("username", ValidationError(f"Username '{username}' not found."))
+        potential_user = models.User.objects.filter(username=username)
         if potential_user:
-            if not potential_user[0].check_password(clean_data.get("password")):
-                self.add_error("password", ValidationError(f"Wrong password."))
+            if not potential_user[0].check_password(password):
+                self.add_error("password", ValidationError("Wrong password."))
 
 
 class SignupForm(forms.Form):
