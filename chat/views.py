@@ -120,8 +120,9 @@ def user_public_chats(request, user_id):
             chat_list_order = "-last_updated"
 
         create_form = forms.CreatePublicRoomForm(request.POST or None)
-        public_rooms = models.ChatRoomPublic.objects.filter(state=1).annotate(total_members=Count("user")).order_by(chat_list_order)
-        user_public_rooms = models.ChatRoomPublic.objects.filter(owner=request.user, state=1).annotate(total_members=Count("user"))
+        public_rooms = models.ChatRoomPublic.objects.filter(state=1).annotate(total_members=Count("user"))
+        user_public_rooms = public_rooms.filter(owner=request.user)
+        public_rooms = public_rooms.order_by(chat_list_order)
 
         if request.method == 'POST':
             if not len(models.ChatRoomPublic.objects.filter(owner=request.user, state=1)) < 3:
@@ -168,7 +169,7 @@ def user_public_chat_room(request, user_id, url_id):
 
 def user_private_chats(request, user_id):
     if request.user.is_authenticated and request.user.id == user_id:
-        rooms = models.ChatRoomPrivat.objects.filter(Q(user_1 = request.user) | Q(user_2 = request.user)).order_by("-last_updated")
+        rooms = models.ChatRoomPrivat.objects.filter(state=1).filter(Q(user_1 = request.user) | Q(user_2 = request.user)).order_by("-last_updated")
 
         room_data = []
         for room in rooms:

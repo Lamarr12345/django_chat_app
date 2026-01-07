@@ -39,16 +39,16 @@ class SignupForm(forms.Form):
             self.add_error("email", ValidationError("Email already taken."))
         if password != confirm_password:
             self.add_error("password", ValidationError("Password and password confirmation do not match."))
-        # if len(password) < 8:
-        #     self.add_error("password", ValidationError("Password shorter than 8 symbols."))
-        # if not [x for x in password if x.isupper()]:
-        #     self.add_error("password", ValidationError("Password must contain upper case letter."))
-        # if not [x for x in password if x.islower()]:
-        #     self.add_error("password", ValidationError("Password must contain lower case letter."))
-        # if not [x for x in password if x.isnumeric()]:
-        #     self.add_error("password", ValidationError("Password must contain number."))
-        # if " " in password:
-        #     self.add_error("password", ValidationError("Password contains empty spaces."))
+        if len(password) < 8:
+            self.add_error("password", ValidationError("Password shorter than 8 symbols."))
+        if not [x for x in password if x.isupper()]:
+            self.add_error("password", ValidationError("Password must contain upper case letter."))
+        if not [x for x in password if x.islower()]:
+            self.add_error("password", ValidationError("Password must contain lower case letter."))
+        if not [x for x in password if x.isnumeric()]:
+            self.add_error("password", ValidationError("Password must contain number."))
+        if " " in password:
+            self.add_error("password", ValidationError("Password contains empty spaces."))
 
 
 class JoinPublicChatForm(forms.Form):

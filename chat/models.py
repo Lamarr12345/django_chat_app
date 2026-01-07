@@ -22,15 +22,15 @@ class ChatRoomPublic(models.Model):
         (1, "active"),
     )
     name = models.CharField(max_length=255)
-    user = models.ManyToManyField(User, related_name='public_users')
+    user = models.ManyToManyField(User, blank=True, related_name='public_users')
 #   guest = models.ManyToManyField(Guest, blank=True, related_name='public_guests')
     url_id = models.CharField(max_length=10, unique=True)        # 0s + row id (0s till the total amount of characters is 10 eg '0000000012' for id 12)
     state = models.SmallIntegerField(choices=STATES, default=1)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=False, null=True, related_name='public_chat_owner')
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='public_chat_owner')
     last_updated = models.DateTimeField(null=False, default=timezone.now)
 
     def __str__(self):
-        return self.url_id
+        return f"{self.url_id}: {self.name}"
     
 class TextMessagePublic(models.Model):
     time_stamp = models.DateTimeField(auto_now=True)
@@ -47,9 +47,14 @@ class TextMessagePublic(models.Model):
 
 
 class ChatRoomPrivat(models.Model):
+    STATES = (
+        (0, "closed"),
+        (1, "active"),
+    )
     user_1 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='privat_user_1')
     user_2 = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='privat_user_2')
     url_id = models.CharField(max_length=50, unique=True)  # '(user id)-(other user id)' (the first id is the lower of the 2)
+    state = models.SmallIntegerField(choices=STATES, default=1)
     last_updated = models.DateTimeField(null=False, default=timezone.now)
 
     def __str__(self):
