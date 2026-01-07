@@ -37,8 +37,11 @@ def login(request):
         return render(request, "login.html", {"form": form})
 
 def logout(request):
-    auth_logout(request)
-    return render(request, "logout.html")
+    if request.user.is_authenticated:
+        auth_logout(request)
+        return render(request, "logout.html")
+    else:
+        return render(request, "no_access.html")
 
 
 def signup(request):

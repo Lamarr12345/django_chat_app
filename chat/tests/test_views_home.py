@@ -2,10 +2,6 @@ from django.test import TestCase
 from .. import views
 from django.urls import reverse
 from .. import models
-from django.contrib.auth import authenticate
-from django.contrib.auth import login
-
-views.home
 
 class TestHome(TestCase):
     
@@ -42,3 +38,4 @@ class TestHome(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.user.is_authenticated)
         self.assertRedirects(response, self.user_home_url)
+        self.client.logout()
