@@ -72,14 +72,14 @@ class TestUserHome(TestCase):
 
         response = self.client.post(self.user_home_url, {
             "form-type" : "join-public-chat-room",
-            "chat_id" : "00000001",
+            "chat_id" : self.public_chat.url_id,
         })
 
         session = self.client.session
         self.assertEqual(str(session['_auth_user_id']), str(self.user.id))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.user.is_authenticated)
-        self.assertRedirects(response, reverse("chat:user-public-chat-room", kwargs={"user_id":self.user.id, "url_id": "00000001"}))
+        self.assertRedirects(response, reverse("chat:user-public-chat-room", kwargs={"user_id":self.user.id, "url_id": self.public_chat.url_id}))
         self.client.logout()
 
     def test_user_home_post_join_public_chat_wrong_id(self):
@@ -104,7 +104,7 @@ class TestUserHome(TestCase):
         self.public_chat.save()
         response = self.client.post(self.user_home_url, {
             "form-type" : "join-public-chat-room",
-            "chat_id" : "00000001",
+            "chat_id" : self.public_chat.url_id,
         })
 
         session = self.client.session
