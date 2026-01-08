@@ -234,10 +234,9 @@ def user_public_chat_room_close(request, user_id, url_id):
         if rooms:
             rooms[0].state = 0
             rooms[0].save()
+            return redirect("chat:user-public-chats", user_id)
   
-        return redirect("chat:user-public-chats", user_id)
-    else:
-        return render(request, "no_access.html")
+    return render(request, "no_access.html")
      
 
 

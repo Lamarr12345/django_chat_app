@@ -7,7 +7,7 @@ def is_public_member(user, url_id):
     
     chat = chats[0]
 
-    if user not in chat.user.all():
+    if not chat.user.filter(pk=user.id).exists():
         return False
     
     return True

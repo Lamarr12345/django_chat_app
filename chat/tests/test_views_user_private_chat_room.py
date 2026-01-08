@@ -15,6 +15,11 @@ class TestUserPrivateChatRoom(TestCase):
             email = 'test2@gmail.com',
             password = 'Test1234'
         )
+        self.user3 = models.User.objects.create_user(
+            username = 'test3',
+            email = 'test3@gmail.com',
+            password = 'Test1234'
+        )
         self.password = 'Test1234'
         self.private_room = models.ChatRoomPrivat.objects.create(user_1 = self.user,
                                                                  user_2 = self.user2,
@@ -43,13 +48,25 @@ class TestUserPrivateChatRoom(TestCase):
     def test_user_private_chat_room_get_wrong_authenticated_user(self):
         self.client.login(username=self.user.username,password=self.password) 
 
-        response = self.client.get(reverse('chat:user-private-chat-room',  kwargs={"user_id":self.user.id, "url_id": self.private_room.url_id +"1"}))
+        response = self.client.get(reverse('chat:user-private-chat-room',  kwargs={"user_id":self.user2.id, "url_id": self.private_room.url_id}))
 
         session = self.client.session
         self.assertEqual(str(session['_auth_user_id']), str(self.user.id))
         self.assertEqual(response.status_code, 200)
         self.assertTrue(self.user.is_authenticated)
         self.assertTrue(self.user2.is_authenticated)
+        self.assertTemplateUsed(response,'no_access.html')
+        self.client.logout()
+
+    def test_user_private_chat_room_get_not_member_user(self):
+        self.client.login(username=self.user3.username,password=self.password)
+
+        response = self.client.get(self.user_private_chat_room_url)
+
+        session = self.client.session
+        self.assertEqual(str(session['_auth_user_id']), str(self.user3.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user3.is_authenticated)
         self.assertTemplateUsed(response,'no_access.html')
         self.client.logout()
 
