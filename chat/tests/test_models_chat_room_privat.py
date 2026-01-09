@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .. import models
-from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 
 
 class TestChatRoomPrivat(TestCase):
@@ -35,8 +35,16 @@ class TestChatRoomPrivat(TestCase):
                                                             url_id=self.url_id)
         self.assertTrue(models.ChatRoomPrivat.objects.filter(url_id=self.url_id).exists())
 
-        with self.assertRaises(Exception) as ie:
+        with self.assertRaises(Exception) as e:
             models.ChatRoomPrivat.objects.create(user_1=self.user,
-                                                            user_2=self.user2,
-                                                            url_id=self.url_id)
-        self.assertEqual(type(ie.exception), IntegrityError)
+                                                user_2=self.user2,
+                                                url_id=self.url_id)
+        self.assertEqual(type(e.exception), ValidationError)
+
+    def test_chat_room_privat_create_url_same_users(self):
+        with self.assertRaises(Exception) as e:
+            models.ChatRoomPrivat.objects.create(user_1=self.user,
+                                                user_2=self.user,
+                                                url_id=self.url_id)
+        
+        self.assertEqual(type(e.exception), ValidationError)
