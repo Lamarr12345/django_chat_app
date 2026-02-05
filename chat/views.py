@@ -159,6 +159,7 @@ def user_public_chat_room(request, user_id, url_id):
                                                                 user = request.user)
             room.last_updated = timezone.now()
             room.save()
+            return redirect("chat:user-public-chat-room", user_id, url_id)
 
         chat_msgs = models.TextMessagePublic.objects.filter(chat_room=room).order_by('-time_stamp')
         chat_msgs.query.set_limits(high=20)
@@ -196,6 +197,7 @@ def user_private_chat_room(request, user_id, url_id):
                                                                 user = request.user)
             room.last_updated = timezone.now()
             room.save()
+            return redirect("chat:user-private-chat-room", user_id, url_id)
 
         chat_msgs = models.TextMessagePrivat.objects.filter(chat_room=room).order_by('-time_stamp')
         chat_msgs.query.set_limits(high=20)
