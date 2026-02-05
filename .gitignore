@@ -2,6 +2,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+chat/__pychache__/
 
 # C extensions
 *.so

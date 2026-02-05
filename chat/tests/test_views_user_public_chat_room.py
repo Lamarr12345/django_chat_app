@@ -73,9 +73,9 @@ class TestUserPublicChatRoom(TestCase):
 
         session = self.client.session
         self.assertEqual(str(session['_auth_user_id']), str(self.user.id))
-        self.assertContains(response, "this is test text", status_code=200)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(models.TextMessagePublic.objects.filter(content="this is test text").exists())
         self.assertTrue(self.user.is_authenticated)
-        self.assertTemplateUsed(response,'user_public_chat_room.html')
         self.client.logout()
 
     def test_user_public_chat_room_post_send_message_in_closed_room(self):
