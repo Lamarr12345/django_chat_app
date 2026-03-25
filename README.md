@@ -1,5 +1,3 @@
-{% if False %}
-
 # Introduction
 
 The goal of this project was to build a simple chat application, to incorporate different django concepts.
@@ -25,7 +23,7 @@ Template is written with django 5.2.8 and python 3 in mind.
 
 * PostgreSQL as default database
 
-* Extensive testing to veriffy correct functionality and security
+* Extensive testing to verify correct functionality and security
 
 # Usage
 
@@ -76,8 +74,6 @@ To start the project use
     $ python manage.py runserver
 
 Follow the link given in the response to interact with the app in your browser.
-
-{% endif %}
 
 # Django Chat App
 
